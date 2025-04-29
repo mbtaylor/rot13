@@ -16,3 +16,4 @@ ABJURER nowhere 123.
 ```
 - Name your file `main.<language extension>` whenever possible.
 - Place your file/project within a folder `<language name>`.
+- New contributions must be placed in public domain or `Unlicense`d. Some older ones stay at GPLv2.0-only, see [this file](./Licensing) for license info.
