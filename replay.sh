@@ -117,4 +117,4 @@ for toplevel in "${!toplevels[@]}"; do
         fi
         printf '%s\tGPL-2.0-only%s\n' "$toplevel" "$authors"
     fi
-done | sort
+done | LC_ALL=C sort -s
