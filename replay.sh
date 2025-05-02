@@ -6,8 +6,14 @@ TAB=$(printf "\t")
 
 declare -a authors
 declare -A files
-declare -a ignores=(llathasa purplesyringa utk8g)
-declare -a ignorefiles=(.mailmap LICENSE UNLICENSE)
+
+if [[ -z $NO_IGNORE ]]; then
+    declare -a ignores=(llathasa purplesyringa utk8g)
+    declare -a ignorefiles=(.mailmap LICENSE UNLICENSE)
+else
+    declare -a ignores
+    declare -a ignorefiles
+fi
 
 while read -r line; do
     case $line in
@@ -108,12 +114,20 @@ done
 
 for toplevel in "${!toplevels[@]}"; do
     authors="${toplevels[$toplevel]}"
-    if [[ -z "$authors" ]]; then
-        printf '%s\tUnlicense\n' "$toplevel"
+    if [[ -z $SHOW_REMAINING ]]; then
+        display_authors=
     else
-        if [[ -z $SHOW_REMAINING ]]; then
-            authors=
-        fi
-        printf '%s\tGPL-2.0-only%s\n' "$toplevel" "$authors"
+        display_authors="$authors"
     fi
+
+    license=--
+    if [[ -z $NO_IGNORE ]]; then
+        if [[ -z $authors ]]; then
+            license=Unlicense
+        else
+            license=GPL-2.0-only
+        fi
+    fi
+
+    printf '%s\t%s%s\n' "$toplevel" "$license" "$display_authors"
 done | LC_ALL=C sort -s
