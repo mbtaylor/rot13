@@ -31,7 +31,7 @@ while read -r line; do
             fi
             ;;
         *)
-            IFS=$TAB read -r -a command <<<"$line"
+            IFS="$TAB" read -r -a command <<<"$line"
             case ${command[0]} in
                 R*)
                     from="${command[1]}"
@@ -45,7 +45,7 @@ while read -r line; do
                     ;&
                 M)
                     file="${command[1]}"
-                    for author in $authors; do
+                    for author in ${authors[@]}; do
                         case ${files["$file"]} in
                             *$author*)
                                 ;;
@@ -73,8 +73,7 @@ done < <(
         -e 's/^ *//' \
         -e 's/Co-authored-by/Author/i' \
         -e 's/Author: .*(<.*>)/Author: \1/' | \
-    uniq | \
-    sed -z 's/commit [^\n]*\nAuthor: [^\n]*\n\n//g'
+    uniq
 )
 
 for file in "${ignorefiles[@]}"; do
@@ -95,8 +94,8 @@ for file in "${!files[@]}"; do
     toplevel="${toplevel%%/*}"
     toplevels["$toplevel"]=
 
-    IFS=$TAB read -r -a authors <<<"${files["$file"]}"
-    for author in $authors; do
+    IFS="$TAB" read -r -a authors <<<"${files["$file"]}"
+    for author in ${authors[@]}; do
         case ${toplevels["$toplevel"]} in
             *$author*)
                 ;;
