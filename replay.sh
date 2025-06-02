@@ -3,6 +3,7 @@
 # Cursed git log replayer, under CC0 or Unlicense at your option
 
 TAB=$(printf "\t")
+COMMIT=3e6152f0c0021d6517922c33504e5ca57a6722c8
 
 declare -a authors
 declare -A files
@@ -15,9 +16,14 @@ else
     declare -a ignorefiles
 fi
 
+PD=0
 while read -r line; do
     case $line in
         "commit "*)
+            if [[ "${line#commit }" = "$COMMIT" ]]; then
+                # All edits since this commit are public domain.
+                PD=1
+            fi
             authors=()
             ;;
         "Author: "*)
@@ -32,7 +38,7 @@ while read -r line; do
                         ;;
                 esac
             done
-            if [[ -z $author_ignored ]]; then
+            if [[ -z $author_ignored && $PD -eq 0 ]]; then
                 authors+=("$author")
             fi
             ;;
