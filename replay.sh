@@ -9,7 +9,7 @@ declare -a authors
 declare -A files
 
 if [[ -z $NO_IGNORE ]]; then
-    declare -a ignores=(llathasa purplesyringa utk8g georgeendo)
+    declare -a ignores=(llathasa purplesyringa utk8g georgeendo alice-carroll)
     declare -a ignorefiles=(.mailmap LICENSE UNLICENSE)
 else
     declare -a ignores
